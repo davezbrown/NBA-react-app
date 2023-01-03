@@ -1,5 +1,5 @@
 import React from 'react';
-import Navbar from './Navbar';
+import {Navbar} from './Navbar';
 import { makeStyles } from "@material-ui/core/styles";
 
 
@@ -14,7 +14,7 @@ const useStyles = makeStyles({
     },
 });
 
-function About() {
+export const About = () => {
     const classes = useStyles();
 
   return (
@@ -25,5 +25,3 @@ function About() {
     </div>
   );
 }
-
-export default About;

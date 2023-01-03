@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card } from 'react-bootstrap';
 
-function PlayerCard(props) {
+export const PlayerCard =(props) => {
   const { name, team, points, rebounds, assists, steals, blocks } = props;
 
   return (
@@ -26,5 +26,3 @@ function PlayerCard(props) {
     </div>
   );
 }
-
-export default PlayerCard;

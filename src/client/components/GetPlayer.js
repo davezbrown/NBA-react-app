@@ -4,7 +4,7 @@ import PlayerStats from './PlayerStats';
 
 const API_URL = 'https://www.balldontlie.io/api/v1/players';
 
-export default function GetPlayer(props) {
+export const GetPlayer = (props) => {
   const { name } = props;
   const [player, setPlayer] = useState(null);
 

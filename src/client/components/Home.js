@@ -1,6 +1,6 @@
 import React from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
-import Navbar from './Navbar'
+import {Navbar} from './Navbar'
 import SearchForm from './SearchForm';
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -15,7 +15,7 @@ const useStyles = makeStyles({
     },
 });
 
-function Home() {
+export const Home = () => {
   const classes = useStyles();
 
   return (
@@ -32,5 +32,3 @@ function Home() {
     </div>
   );
 }
-
-export default Home;

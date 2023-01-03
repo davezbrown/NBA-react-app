@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-import PlayerCard from './PlayerCard';
+import {PlayerCard} from './PlayerCard';
 
 const API_URL = 'https://www.balldontlie.io/api/v1/season_averages';
 

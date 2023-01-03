@@ -1,90 +1,114 @@
-import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import Navbar from "./Navbar";
-import { Link } from "react-router-dom";
-import axios from "axios";
+import React, { useState } from 'react'
+import firebase from 'firebase/app';
+import { useAuth,  useSigninCheck } from 'reactfire';
+import 'firebase/auth';
+import { Input } from './Input';
+import { Container, Button, makeStyles, Typography, Snackbar,  } from '@material-ui/core';
+import { withRouter } from "react-router-dom";
+import MuiAlert from '@material-ui/lab/Alert';
+import { Navbar } from './Navbar'
 
-const useStyles = makeStyles((theme) => ({
-  background: {
-    backgroundColor: `black`,
-    width: '100%',
-    height: '100%',
-    backgroundPosition: 'center',
-    position: 'absolute',
-    zIndex: -1,
-  },
-  form: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  input: {
-    margin: "1rem 0",
-  },
-  button: {
-    margin: "1rem 0",
-  },
-  link: {
-    color: "black",
-    textDecoration: "none",
-  },
-}));
-
-function SignIn() {
-  const classes = useStyles();
-  const [form, setForm] = React.useState({ email: "", password: "" });
-
-  const handleChange = (event) => {
-    setForm({ ...form, [event.target.name]: event.target.value });
-  };
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    axios
-      .post("http://localhost:5000/api/signin", form)
-      .then((res) => {
-        // Retrieve the user's id from the response
-        const userId = res.data.id;
-        // Store the user's id in local storage
-        localStorage.setItem("user_id", userId);
-      })
-      .catch((err) => console.log(err));
-  };
-
-  return (
-    <div className={classes.background}>
-      <Navbar />
-      <form className={classes.form} onSubmit={handleSubmit}>
-        <label style={{color: "rgb(0, 255, 225)"}}>
-          Email:
-          <input
-            className={classes.input}
-            type="email"
-            name="email"
-            value={form.email}
-            onChange={handleChange}
-          />
-        </label>
-        <label style={{color: "rgb(0, 255, 225)"}}>
-          Password:
-          <input
-            className={classes.input}
-            type="password"
-            name="password"
-            value={form.password}
-            onChange={handleChange}
-          />
-        </label>
-        <button className={classes.button} type="submit">
-          Sign In
-        </button>
-      </form>
-      <Link to="/signup" className={classes.link} style={{color: "rgb(194, 3, 252)", display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-        Don't have an account? Sign up here.
-      </Link>
-    </div>
-  );
+const Alert = (props) => {
+  return <MuiAlert elevation={6} variant="filled" {...props} />
 }
 
-export default SignIn;
+
+const useStyles = makeStyles({
+    googleButton:{
+        backgroundColor: 'rgb(66,133,244)',
+        marginTop: '2em',
+        padding: '0',
+        color: 'white',
+        height: '50px',
+        width: '240px',
+        border: 'none',
+        textAlign: 'center',
+        boxShadow: 'rgb(0 0 0 / 25%) 0px 2px 4px 0px',
+        fontSize: '16px',
+        lineHeight: '48px',
+        display: 'block',
+        borderRadius: '1px',
+        fontFamily: 'Roboto, arial, sans-serif',
+        cursor: 'pointer'
+    },
+    googleLogo:{
+        width: '48px',
+        height: '48px',
+        display: 'block'
+    },
+    typographyStyle: {
+        fontFamily: 'Roboto, arial, sans-serif;',
+        textAlign: 'center',
+        fontSize: '2em'
+    },
+    containerStyle: {
+        marginTop: '2em'
+    },
+    snackBar: {
+        color: 'white',
+        backgroundColor: '#4caf50'
+    }
+});
+
+export const SignIn = withRouter((props) => {
+  const auth = useAuth();
+  const classes = useStyles();
+  const { history } = props;
+  const [open, setOpen] = useState(false);
+
+
+    const handleSnackOpen = () => {
+        setOpen(true)
+    };
+
+    const handleSnackClose = (event, reason) => {
+      if (reason === "clickaway") {
+      return;
+      }
+      
+      setOpen(false);
+      history.push("/");
+      };
+
+    const sign_in = async () => {
+        const response = await auth.signInWithPopup( new firebase.auth.GoogleAuthProvider());
+        if(response.user){
+            handleSnackOpen();
+        }
+    };
+
+    const sign_out = async () => {
+        await auth.signOut();
+    }
+
+    return (
+        <div>
+            <Navbar />
+            <Container maxWidth = 'sm' className={classes.containerStyle}>
+                <Typography className={classes.typographyStyle}>Sign In Below</Typography>
+                <form>
+                    <div>
+                        <label htmlFor="email">Email</label>
+                        <Input name="email" placeholder="Place Email Here" />
+                    </div>
+                    <div>
+                        <label htmlFor="password">Password</label>
+                        <Input name="password" placeholder="Place Password Here" />
+                    </div>
+                    <Button type="submit" variant='contained' color='primary'>Submit</Button>
+                </form>
+
+                <useSigninCheck fallback={
+                    <Button className={classes.googleButton} onClick={sign_in}>Sign In With Google</Button>
+                }>
+                    <Button variant='contained' color='secondary' onClick={sign_out}>Sign Out</Button>
+                </useSigninCheck>
+                <Snackbar message={'Success'} open={open} autoHideDuration={6000} onClose={handleSnackClose}>
+                    <Alert onClose={handleSnackClose} severity="success">
+                        Successful Sign In - Redirect in 6 seconds
+                    </Alert>
+                </Snackbar>
+            </Container>
+        </div>
+    )
+});
