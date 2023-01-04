@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import firebase from 'firebase/app';
-import { useAuth,  useSigninCheck } from 'reactfire';
+import { AuthCheck, useAuth } from 'reactfire';
 import 'firebase/auth';
 import { Input } from './Input';
 import { Container, Button, makeStyles, Typography, Snackbar,  } from '@material-ui/core';
@@ -18,7 +18,7 @@ const useStyles = makeStyles({
         backgroundColor: 'rgb(66,133,244)',
         marginTop: '2em',
         padding: '0',
-        color: 'white',
+        color: 'black',
         height: '50px',
         width: '240px',
         border: 'none',
@@ -82,33 +82,44 @@ export const SignIn = withRouter((props) => {
     }
 
     return (
-        <div>
-            <Navbar />
-            <Container maxWidth = 'sm' className={classes.containerStyle}>
-                <Typography className={classes.typographyStyle}>Sign In Below</Typography>
-                <form>
-                    <div>
-                        <label htmlFor="email">Email</label>
-                        <Input name="email" placeholder="Place Email Here" />
-                    </div>
-                    <div>
-                        <label htmlFor="password">Password</label>
-                        <Input name="password" placeholder="Place Password Here" />
-                    </div>
-                    <Button type="submit" variant='contained' color='primary'>Submit</Button>
-                </form>
-
-                <useSigninCheck fallback={
-                    <Button className={classes.googleButton} onClick={sign_in}>Sign In With Google</Button>
-                }>
-                    <Button variant='contained' color='secondary' onClick={sign_out}>Sign Out</Button>
-                </useSigninCheck>
-                <Snackbar message={'Success'} open={open} autoHideDuration={6000} onClose={handleSnackClose}>
-                    <Alert onClose={handleSnackClose} severity="success">
-                        Successful Sign In - Redirect in 6 seconds
-                    </Alert>
-                </Snackbar>
-            </Container>
-        </div>
-    )
-});
+      <div>
+        <Navbar />
+        <Container maxWidth="sm" className={classes.containerStyle}>
+          <Typography className={classes.typographyStyle}>Sign In Below</Typography>
+          <form>
+            <div>
+              <label htmlFor="email">Email</label>
+              <Input name="email" placeholder="Place Email Here" />
+            </div>
+            <div>
+              <label htmlFor="password">Password</label>
+              <Input name="password" placeholder="Place Password Here" />
+            </div>
+            <Button type="submit" variant="contained" color="primary">
+              Submit
+            </Button>
+          </form>
+    
+          <AuthCheck fallback={
+            <Button className={classes.googleButton} onClick={sign_in}>
+              Sign In With Google
+            </Button>
+          }>
+            <Button variant="contained" color="secondary" onClick={sign_out}>
+              Sign Out
+            </Button>
+          </AuthCheck>
+          <Snackbar
+            message={"Success"}
+            open={open}
+            autoHideDuration={6000}
+            onClose={handleSnackClose}
+          >
+            <Alert onClose={handleSnackClose} severity="success">
+              Successful Sign In - Redirecting in 6 seconds
+            </Alert>
+          </Snackbar>
+        </Container>
+      </div>
+    );
+  },)

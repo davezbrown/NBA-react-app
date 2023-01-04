@@ -5,8 +5,8 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import Logo from '../assets/images/basketball.png';
-import { Link } from 'react-router-dom';
-import {AuthCheck} from 'reactfire'
+import { Link, useHistory } from 'react-router-dom';
+import {AuthCheck, useAuth} from 'reactfire'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -29,6 +29,13 @@ const useStyles = makeStyles((theme) => ({
 
 export const Navbar = () => {
   const classes = useStyles();
+  const auth = useAuth();
+  const history = useHistory();
+
+  const signOut = async () => {
+    await auth.signOut();
+    history.push("/");
+  }
 
   return (
     <div className={classes.root}>
@@ -37,12 +44,12 @@ export const Navbar = () => {
           <Link to="/">
             <img src={Logo} alt="Logo" className={classes.logo} />
           </Link>
-          <Typography style={{paddingLeft:"13rem", flexDirection: 'column', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'black' }} variant="h2" className={classes.title}>
+          <Typography style={{paddingLeft: "2rem", flexDirection: 'column', display: 'flex', alignItems: 'left', justifyContent: 'center', color: 'black' }} variant="h2" className={classes.title}>
             NBA Stat Reference
           </Typography>
           <Suspense fallback={'loading...'}>
           <AuthCheck fallback={
-          <Button color="black">
+          <Button style={{color: "black"}}>
               <Link className={classes.link} to="/signin">Sign In</Link>
           </Button>
           }>
@@ -55,12 +62,11 @@ export const Navbar = () => {
           <Button color="black">
             <Link className={classes.link} to="/about">About</Link>
           </Button>
+          <Button color="secondary" onClick={signOut}>Sign Out</Button>
           </AuthCheck>
           </Suspense>
         </Toolbar>
       </AppBar>
     </div>
   );
-  
-  
 }

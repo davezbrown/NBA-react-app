@@ -11,7 +11,7 @@ import {
   Switch
 } from "react-router-dom";
 import {firebaseConfig} from './firebaseConfig';
-import {FirebaseAppProvider, useSigninCheck} from 'reactfire';
+import {FirebaseAppProvider, AuthCheck} from 'reactfire';
 import 'firebase/auth';
 import {Provider} from 'react-redux';
 import {store} from './client/Redux/store';
@@ -25,10 +25,18 @@ root.render(
 
       <Router>
         <Switch>
-          <Route path="/about" element={<About />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/" element={<Home />} />
-          <Route path="/signin" element={<SignIn />} />
+          <Route exact path="/">
+          <Home></Home>
+          </Route>
+          <Route path="/about">
+            <About></About>
+          </Route>
+          <Route path="/dashboard">
+            <Dashboard></Dashboard>
+          </Route>
+          <Route path="/signin">
+            <SignIn></SignIn>
+          </Route>
         </Switch>
     </Router>
     </Provider>
