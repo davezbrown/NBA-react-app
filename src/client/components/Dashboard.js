@@ -108,12 +108,15 @@ export const Dashboard = () => {
       <Suspense fallback="Loading your favorite players...">
         <Grid container spacing={6}>
           {players.map((player) => (
-            <Grid item xs={4} key={player.id}>
+            <Grid style={{paddingBottom: '5rem'}} item xs={4} key={player.id}>
               <GetPlayer
                 name={player.name}
                 id={player.id}
                 handleDelete={handleDelete}
               />
+              <Button className={classes.deleteButton} onClick={() => handleDelete(player.id)} variant="contained" color="secondary">
+              Delete Player
+            </Button>
             </Grid>
           ))}
         </Grid>
