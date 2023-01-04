@@ -2,7 +2,7 @@ let token = 'f76fa86309674b91a6c2d0ff126a293c95c208992659873e';
 
 export const server_calls = {
     get: async () => {
-        const response = await fetch(`http://understood-available-guava.glitch.me/api/players`,{
+        const response = await fetch(`https://understood-available-guava.glitch.me/api/players`,{
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -17,7 +17,7 @@ export const server_calls = {
     return await response.json()
     },
     create: async(data = {}) => {
-        const response = await fetch(`http://understood-available-guava.glitch.me/api/players`,{
+        const response = await fetch(`https://understood-available-guava.glitch.me/api/players`,{
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -33,7 +33,7 @@ export const server_calls = {
         return await response.json()
         },
         update: async (id, data = {}) => {
-            const response = await fetch(`http://understood-available-guava.glitch.me/api/players/${id}`, {
+            const response = await fetch(`https://understood-available-guava.glitch.me/api/players/${id}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -43,7 +43,7 @@ export const server_calls = {
             });
         },
         delete: async(id) => {
-            const response = await fetch(`http://understood-available-guava.glitch.me/api/players/${id}`,{
+            const response = await fetch(`https://understood-available-guava.glitch.me/api/players/${id}`,{
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',

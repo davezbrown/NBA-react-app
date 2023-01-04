@@ -6,6 +6,7 @@ import { server_calls } from '/Users/david/Coding-Temple/Capstone/nba-stat-ref/s
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import { Suspense } from 'react';
 
 const useStyles = makeStyles({
   background: {
@@ -104,16 +105,19 @@ export const Dashboard = () => {
           Add Player
         </Button>
       </form>
-      <Grid container spacing={6}>
-        {players.map((player) => (
-          <Grid style={{paddingBottom: '5rem'}} item xs={4} key={player.id}>
-            <GetPlayer name={player.name} />
-            <Button className={classes.deleteButton} onClick={() => handleDelete(player.id)} variant="contained" color="secondary">
-              Delete Player
-            </Button>
-          </Grid>
-        ))}
-      </Grid>
+      <Suspense fallback="Loading your favorite players...">
+        <Grid container spacing={6}>
+          {players.map((player) => (
+            <Grid item xs={4} key={player.id}>
+              <GetPlayer
+                name={player.name}
+                id={player.id}
+                handleDelete={handleDelete}
+              />
+            </Grid>
+          ))}
+        </Grid>
+      </Suspense>
     </div>
   );
 }  
